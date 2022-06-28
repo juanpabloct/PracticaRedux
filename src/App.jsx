@@ -1,27 +1,34 @@
-import { useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import logo from "./logo.svg";
 import "./App.css";
 import { useDispatch, useSelector } from "react-redux";
-import { decrement, increment, reset } from "./store/slices/counter";
+import {
+  increment,
+  incrementBy,
+  reduce,
+  reset,
+} from "./store/slices/counter/counter";
+import { Input } from "./components/input";
 
 function App() {
   const dispatch = useDispatch();
   const { value } = useSelector((state) => state.value);
-
+  const [input, setInput] = useState("");
   return (
     <div className="App">
       <header className="App-header">
+        <Input input={input} setInput={setInput} />
         <img src={logo} className="App-logo" alt="logo" />
         <p>Hello Vite + React!</p>
-        <p>
-          <button type="button" onClick={() => dispatch(increment())}>
-            count is: {value}
+        <p>{value}</p>
+        <div style={{ display: "flex" }}>
+          <button onClick={() => dispatch(increment())}>Aumentar</button>
+          <button onClick={() => dispatch(incrementBy(+input))}>
+            Aumentar {input}
           </button>
-          <button type="button" onClick={() => dispatch(decrement())}>
-            count is: {value}
-          </button>
-          <button onClick={() => dispatch(reset())}>Reset</button>
-        </p>
+          <button onClick={() => dispatch(reduce())}>Disminuir</button>
+          <button onClick={() => dispatch(reset())}>Iniciar</button>
+        </div>
       </header>
     </div>
   );
